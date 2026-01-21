@@ -1,0 +1,1233 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Haddad Hikmah M | Backend Developer Senior</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        /* Konfigurasi Variabel Warna Global (Design System) */
+        :root {
+            --bg-deep: #020617;
+            --accent-primary: #3b82f6;
+            --accent-secondary: #8b5cf6;
+            --text-bright: #f8fafc;
+            --text-muted: #94a3b8;
+            --glass-bg: rgba(15, 23, 42, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --card-glow: rgba(59, 130, 246, 0.15);
+            --container-width: 1100px;
+        }
+
+        /* Reset & Pengaturan Dasar */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text-bright);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* --- Efek Latar Belakang (Canvas, Grid, & Spotlight) --- */
+        .bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            pointer-events: none;
+            background:
+                radial-gradient(circle at 0% 0%, rgba(59, 130, 246, 0.15) 0%, transparent 35%),
+                radial-gradient(circle at 100% 100%, rgba(139, 92, 246, 0.15) 0%, transparent 35%);
+        }
+
+        .bg-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.15;
+            background-image:
+                linear-gradient(rgba(59, 130, 246, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(59, 130, 246, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+            mask-image: radial-gradient(circle at center, black, transparent 80%);
+        }
+
+        .spotlight {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: -1;
+            transform: translate(-50%, -50%);
+            transition: 0.1s ease-out;
+        }
+
+        /* --- Navigasi Floating --- */
+        nav {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 95%;
+            max-width: 750px;
+            z-index: 1000;
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            padding: 10px 20px;
+            border-radius: 50px;
+            border: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: space-around;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .nav-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            /* Menghapus garis bawah */
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: 0.3s;
+            position: relative;
+            /* Untuk keperluan efek garis aktif jika mau */
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--accent-primary) !important;
+            text-decoration: none;
+            /* Memastikan saat hover/aktif tetap tidak ada garis bawah */
+        }
+
+        /* --- Bagian Hero --- */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 100px 20px;
+        }
+
+        .profile-img {
+            width: clamp(140px, 20vw, 180px);
+            height: clamp(140px, 20vw, 180px);
+            border-radius: 50%;
+            border: 4px solid var(--accent-primary);
+            padding: 5px;
+            background: var(--bg-deep);
+            box-shadow: 0 0 40px var(--card-glow);
+            object-fit: cover;
+            cursor: pointer;
+            margin-bottom: 2rem;
+        }
+
+        .name-glitch {
+            font-size: clamp(2.2rem, 8vw, 4rem);
+            font-weight: 800;
+            background: linear-gradient(to right, #fff, var(--accent-primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1.5px;
+            line-height: 1.1;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 2rem;
+            margin-top: 2.5rem;
+            justify-content: center;
+        }
+
+        .stat-item h3 {
+            color: var(--accent-primary);
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+
+        .stat-item p {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-top: 5px;
+        }
+
+        /* --- Gaya Seksi Global --- */
+        .section {
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 80px 24px;
+        }
+
+        .section-header {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            font-weight: 800;
+            margin-bottom: 3.5rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .section-header span {
+            color: var(--accent-primary);
+        }
+
+        .section-header::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--glass-border);
+        }
+
+        /* --- Timeline (Pengalaman & Pendidikan) --- */
+        .timeline-container {
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .timeline-container::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--accent-primary), var(--accent-secondary), transparent);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 40px;
+        }
+
+        .timeline-content {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            padding: 24px;
+            border-radius: 20px;
+            transition: 0.3s ease;
+        }
+
+        .timeline-content:hover {
+            transform: translateX(8px);
+            border-color: var(--accent-primary);
+        }
+
+        /* --- Grid Skill --- */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 20px;
+            margin-top: 2rem;
+        }
+
+        .skill-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 40px 20px;
+            text-align: center;
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 160px;
+        }
+
+        .skill-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--accent-primary);
+        }
+
+        .skill-card i {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            color: var(--accent-primary);
+        }
+
+        .skill-card span {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--text-bright);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* --- Proyek Card Styles --- */
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 2rem;
+        }
+
+        .project-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            overflow: hidden;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            cursor: pointer;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent-primary);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .project-img-wrapper {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .project-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: 0.5s;
+        }
+
+        .project-card:hover .project-img {
+            transform: scale(1.1);
+        }
+
+        .project-info {
+            padding: 24px;
+        }
+
+        .project-tag {
+            font-size: 0.65rem;
+            font-weight: 800;
+            color: var(--accent-primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .project-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .project-desc {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-bottom: 20px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .project-tech {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .tech-tag {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 4px 10px;
+            border-radius: 50px;
+            font-size: 0.65rem;
+            border: 1px solid var(--glass-border);
+            color: var(--text-bright);
+        }
+
+        /* --- CSS Modal Proyek & Detail --- */
+        #projectDetailModal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 2500;
+            background: rgba(2, 6, 23, 0.95);
+            backdrop-filter: blur(15px);
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        /* Pastikan wrapper modal punya tinggi tetap & konsisten */
+        .modal-content-wrapper {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            width: 100%;
+            max-width: 1000px;
+
+            /* Tambahkan tinggi tetap */
+            height: 80vh;
+            display: flex;
+            flex-direction: row;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        #projectDetailModal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-close-btn {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            z-index: 100;
+            background: var(--glass-bg);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-bright);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+        }
+
+        .modal-close-btn:hover {
+            background: var(--accent-primary);
+            color: white;
+            transform: rotate(90deg) scale(1.1);
+            box-shadow: 0 0 20px var(--accent-primary);
+            border-color: var(--accent-primary);
+        }
+
+        .modal-left {
+            flex: 1.2;
+            background: rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+            min-height: 300px;
+            cursor: zoom-in;
+            touch-action: none;
+        }
+
+        .modal-hero-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            transition: transform 0.1s ease-out;
+            pointer-events: none;
+        }
+
+        /* Sisi Kanan (Konten Teks) */
+        .modal-right {
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            background: rgba(15, 23, 42, 0.5);
+
+            /* Matikan scroll pada seluruh container kanan */
+            overflow-y: hidden;
+        }
+
+        .modal-body {
+            flex: 1;
+            overflow-y: auto;
+            /* Scroll hanya di area teks */
+            padding-right: 15px;
+            /* Ruang agar scrollbar tidak menempel ke teks */
+            margin-bottom: 20px;
+        }
+
+        /* Mempercantik Scrollbar di dalam modal */
+        .modal-body::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .modal-body::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .modal-body::-webkit-scrollbar-thumb {
+            background: var(--accent-primary);
+            border-radius: 10px;
+        }
+
+        /* Pastikan teknologi tetap berada di posisi paling bawah (sticky/fixed di bottom) */
+        .modal-right .tech-label,
+        #detailModalTech {
+            flex-shrink: 0;
+            /* Mencegah bagian ini ikut tergulung/mengecil */
+        }
+
+        .tech-label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: var(--accent-primary);
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+        }
+
+        #detailModalTech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 5px;
+        }
+
+        #detailModalTech .tech-tag {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            padding: 6px 12px;
+            font-size: 0.7rem;
+            white-space: nowrap;
+        }
+
+        .modal-right::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .modal-right::-webkit-scrollbar-thumb {
+            background: var(--accent-primary);
+        }
+
+        .modal-body h2 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: var(--accent-primary);
+            font-weight: 800;
+        }
+
+        .modal-body p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-bottom: 25px;
+            line-height: 1.7;
+        }
+
+        /* --- Kontak Box --- */
+        .cta-box {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.1));
+            padding: 60px 24px;
+            border-radius: 32px;
+            text-align: center;
+            border: 1px solid var(--glass-border);
+        }
+
+        .btn-main {
+            display: inline-block;
+            background: var(--accent-primary);
+            color: white;
+            padding: 14px 36px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: 0.3s;
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+            margin-top: 20px;
+        }
+
+        .btn-main:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 25px rgba(59, 130, 246, 0.5);
+        }
+
+        /* --- Modal Zoom Profil --- */
+        .profile-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 2000;
+            background: rgba(2, 6, 23, 0.95);
+            backdrop-filter: blur(10px);
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: 0.3s;
+        }
+
+        .profile-modal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-img {
+            max-width: 90%;
+            max-height: 85vh;
+            object-fit: contain;
+            border-radius: 12px;
+            border: 2px solid var(--accent-primary);
+        }
+
+        /* --- Media Queries (Responsif) --- */
+        @media (max-width: 1024px) {
+            .skills-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        @media (max-width: 992px) {
+            .modal-content-wrapper {
+                flex-direction: column;
+                max-height: 95vh;
+            }
+
+            .modal-left {
+                flex: none;
+                height: 40%;
+                min-height: 250px;
+            }
+
+            .modal-right {
+                padding: 25px;
+            }
+        }
+
+        @media (max-width: 850px) {
+            .modal-right {
+                padding: 30px 20px;
+                overflow-y: visible;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                width: 92%;
+                top: 15px;
+                padding: 10px 10px;
+            }
+
+            .nav-link {
+                font-size: 0.55rem;
+                letter-spacing: 0;
+            }
+
+            .section {
+                padding: 60px 20px;
+            }
+
+            .hero-stats {
+                gap: 1.5rem;
+            }
+
+            .skills-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 12px;
+            }
+
+            .skill-card {
+                padding: 25px 10px;
+                min-height: 130px;
+            }
+
+            .skill-card i {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .skills-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .stat-item h3 {
+                font-size: 1.2rem;
+            }
+
+            .project-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-left {
+                height: 200px;
+            }
+
+            .modal-close-btn {
+                top: 10px;
+                right: 10px;
+                width: 35px;
+                height: 35px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="bg-canvas"></div>
+    <div class="bg-grid"></div>
+    <div class="spotlight" id="spotlight"></div>
+
+    <div class="profile-modal" id="profileModal">
+        <img src="" class="modal-img" id="modalImg">
+    </div>
+
+    <div id="projectDetailModal">
+        <div class="modal-content-wrapper">
+            <div class="modal-close-btn" onclick="closeProjectModal()">
+                <i class="fas fa-times"></i>
+            </div>
+            <div class="modal-left" id="zoomContainer">
+                <img src="" id="detailModalImg" class="modal-hero-img">
+            </div>
+            <div class="modal-right">
+                <div class="modal-body">
+                    <h2 id="detailModalTitle"></h2>
+                    <p id="detailModalDesc"></p>
+                    <span class="tech-label">Teknologi yang Digunakan</span>
+                    <div id="detailModalTech" class="project-tech"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav>
+        <a href="#" class="nav-link active">Beranda</a>
+        <a href="#experience" class="nav-link">Pengalaman</a>
+        <a href="#skills" class="nav-link">Keahlian</a>
+        <a href="#projects" class="nav-link">Proyek</a>
+        <a href="#education" class="nav-link">Pendidikan</a>
+        <a href="#contact" class="nav-link">Kontak</a>
+    </nav>
+
+    <header class="hero" id="home">
+        <img src="img/profile/profile.jpeg" id="profileTrigger" alt="Haddad Hikmah M" class="profile-img"
+            data-aos="zoom-in"
+            onerror="this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1887&auto=format&fit=crop';">
+        <h1 class="name-glitch" data-aos="fade-up">Haddad Hikmah M</h1>
+        <p style="color: var(--accent-primary); font-weight: 700; margin-top: 10px;" data-aos="fade-up"
+            data-aos-delay="100">Backend Developer Profesional</p>
+        <p style="max-width: 650px; color: var(--text-muted); margin-top: 20px; font-size: 0.9rem;" data-aos="fade-up"
+            data-aos-delay="200">
+            Backend Developer dengan pengalaman lebih dari 3 tahun dalam merancang, mengembangkan, dan mengelola sistem
+            backend berbasis PHP dan Laravel. Berfokus pada pembangunan arsitektur yang scalable, berperforma tinggi,
+            dan aman, serta berpengalaman dalam pengembangan RESTful API yang terstruktur. Terbiasa melakukan
+            peningkatan performa aplikasi, optimalisasi query dan desain database, serta menjaga stabilitas sistem untuk
+            kebutuhan aplikasi berskala besar.
+        </p>
+        <div class="hero-stats" data-aos="fade-up" data-aos-delay="300">
+            <div class="stat-item">
+                <h3>3+</h3>
+                <p>Tahun Pengalaman</p>
+            </div>
+            <div class="stat-item">
+                <h3>11+</h3>
+                <p>Proyek </p>
+            </div>
+            <div class="stat-item">
+                <h3>100%</h3>
+                <p>Komitmen</p>
+            </div>
+        </div>
+    </header>
+
+    <section id="experience" class="section">
+        <h2 class="section-header" data-aos="fade-right">Pengalaman <span>Profesional</span></h2>
+        <div class="timeline-container">
+            <div class="timeline-item" data-aos="fade-up">
+                <div class="timeline-content">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap:wrap; margin-bottom: 10px;">
+                        <div>
+                            <h3 class="timeline-title">Web Developer</h3>
+                            <p class="timeline-org">PT DWI PURWA TEKNOLOGI – Bandung, Indonesia</p>
+                        </div>
+                        <span style="font-size: 0.75rem; color: var(--accent-primary); font-weight: 800;">2023 —
+                            Sekarang</span>
+                    </div>
+                    <ul style="color: var(--text-muted); font-size: 0.85rem; padding-left: 20px;">
+                        <li>Mengembangkan dan memelihara aplikasi web berbasis Laravel dengan fokus pada performa dan
+                            keamanan.</li>
+                        <li>Merancang dan mengimplementasikan RESTful API untuk integrasi antar sistem.</li>
+                        <li>Melakukan unit testing untuk menjaga stabilitas fitur dan mengurangi bug di produksi.</li>
+                        <li>Berkolaborasi dengan tim terkait untuk memastikan pengembangan sistem berjalan sesuai
+                            kebutuhan bisnis.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="timeline-item" data-aos="fade-up">
+                <div class="timeline-content">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; margin-bottom: 10px;">
+                        <div>
+                            <h3 class="timeline-title">Back End Developer</h3>
+                            <p class="timeline-org">PT TARAS (ekuatorid) – Bandung, Indonesia</p>
+                        </div>
+                        <span style="font-size: 0.75rem; color: var(--accent-primary); font-weight: 800;">2022</span>
+                    </div>
+                    <ul style="color: var(--text-muted); font-size: 0.85rem; padding-left: 20px;">
+                        <li>Mengembangkan dan memelihara sistem backend menggunakan TypeScript dan NestJS.</li>
+                        <li>Mengimplementasikan RESTful API yang disesuaikan dengan kebutuhan tim Front-End berdasarkan
+                            user stories dan spesifikasi sistem.</li>
+                        <li>Menganalisis alur data dan performa API untuk memastikan efisiensi sistem serta kesesuaian
+                            dengan tujuan bisnis.</li>
+                        <li>Mendukung proses integrasi API dan peningkatan kualitas layanan backend.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="timeline-item" data-aos="fade-up">
+                <div class="timeline-content">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; margin-bottom: 10px;">
+                        <div>
+                            <h3 class="timeline-title">IT Support</h3>
+                            <p class="timeline-org">SMK ASSALAM – Bandung, Indonesia</p>
+                        </div>
+                        <span style="font-size: 0.75rem; color: var(--accent-primary); font-weight: 800;">2021 —
+                            2023</span>
+                    </div>
+                    <ul style="color: var(--text-muted); font-size: 0.85rem; padding-left: 20px;">
+                        <li>Memelihara dan mengelola infrastruktur jaringan sekolah untuk memastikan konektivitas yang
+                            stabil dan aman.</li>
+                        <li>Melakukan pencatatan dan dokumentasi sistematis terhadap permasalahan perangkat keras
+                            beserta status penyelesaiannya.</li>
+                        <li>Menjalankan pemeliharaan preventif pada perangkat keras serta mengelola inventaris perangkat
+                            lunak dan perangkat IT.</li>
+                        <li>Memberikan dukungan teknis kepada pengguna untuk memastikan operasional sistem berjalan
+                            lancar.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills" class="section">
+        <h2 class="section-header" data-aos="fade-right">Keahlian <span>Saya</span></h2>
+        <div class="skills-grid">
+            <div class="skill-card" data-aos="zoom-in"><i class="fab fa-html5"></i><span>HTML</span></div>
+            <div class="skill-card" data-aos="zoom-in" data-aos-delay="50"><i
+                    class="fab fa-css3-alt"></i><span>CSS</span></div>
+            <div class="skill-card" data-aos="zoom-in" data-aos-delay="100"><i class="fab fa-php"></i><span>PHP</span>
+            </div>
+            <div class="skill-card" data-aos="zoom-in" data-aos-delay="150"><i
+                    class="fab fa-js"></i><span>Javascript</span></div>
+            <div class="skill-card" data-aos="zoom-in" data-aos-delay="200"><i
+                    class="fab fa-laravel"></i><span>Laravel</span></div>
+            <div class="skill-card" data-aos="zoom-in" data-aos-delay="250"><i
+                    class="fas fa-fire"></i><span>CodeIgniter</span></div>
+            <div class="skill-card" data-aos="zoom-in" data-aos-delay="300"><i
+                    class="fas fa-database"></i><span>PostgreSQL</span></div>
+            <div class="skill-card" data-aos="zoom-in" data-aos-delay="350"><i
+                    class="fas fa-server"></i><span>MySQL</span></div>
+            <div class="skill-card" data-aos="zoom-in" data-aos-delay="400"><i
+                    class="fas fa-network-wired"></i><span>REST API</span></div>
+            <!-- <div class="skill-card" data-aos="zoom-in" data-aos-delay="450"><i class="fab fa-git-alt"></i><span>Git</span></div> -->
+            <div class="skill-card" data-aos="zoom-in" data-aos-delay="500"><i
+                    class="fas fa-globe-asia"></i><span>ArcGIS</span></div>
+        </div>
+    </section>
+
+    <section id="projects" class="section">
+        <h2 class="section-header" data-aos="fade-right">Proyek <span>Terbaru</span></h2>
+        <div class="project-grid" id="projectContainer"></div>
+    </section>
+
+    <section id="education" class="section">
+        <h2 class="section-header" data-aos="fade-right">Pendidikan <span>Saya</span></h2>
+        <div class="timeline-container">
+            <div class="timeline-item" data-aos="fade-up">
+                <div class="timeline-content">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap;">
+                        <h3 class="timeline-title">Universitas Nasional Pasim</h3>
+                        <span
+                            style="font-size: 0.75rem; color: var(--accent-primary); font-weight: 800; text-transform: uppercase;">2024
+                            — Sekarang</span>
+                    </div>
+                </div>
+            </div>
+            <div class="timeline-item" data-aos="fade-up">
+                <div class="timeline-content">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap;">
+                        <h3 class="timeline-title">SMK Assalaam Bandung</h3>
+                        <span
+                            style="font-size: 0.75rem; color: var(--accent-primary); font-weight: 800; text-transform: uppercase;">2020
+                            — 2023</span>
+                    </div>
+                </div>
+            </div>
+            <div class="timeline-item" data-aos="fade-up">
+                <div class="timeline-content">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap;">
+                        <h3 class="timeline-title">SMPN 3 Baleendah</h3>
+                        <span
+                            style="font-size: 0.75rem; color: var(--accent-primary); font-weight: 800; text-transform: uppercase;">2017
+                            — 2020</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="section">
+        <div class="cta-box" data-aos="zoom-in">
+            <h2 style="font-size: 2rem; margin-bottom: 10px;">Siap Membangun Masa Depan?</h2>
+            <p style="color: var(--text-muted);">Saya terbuka untuk diskusi teknis mengenai arsitektur backend maupun
+                peluang kerja sama profesional.</p>
+            <a href="mailto:haddadhikmahm@email.com" class="btn-main">Mulai Kolaborasi</a>
+        </div>
+    </section>
+
+    <footer
+        style="text-align: center; padding: 40px 20px; color: var(--text-muted); font-size: 0.8rem; border-top: 1px solid var(--glass-border);">
+        &copy; 2026 Haddad Hikmah M. Dibuat dengan Kode & Dedikasi.
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Inisialisasi AOS (Animate on Scroll)
+        AOS.init({
+            duration: 800,
+            once: true
+        });
+
+        // Efek Spotlight yang mengikuti kursor mouse
+        const spotlight = document.getElementById('spotlight');
+        window.addEventListener('mousemove', e => {
+            spotlight.style.left = e.clientX + 'px';
+            spotlight.style.top = e.clientY + 'px';
+        });
+
+        // 1. DATA PROYEK DINAMIS (Pusat Data Konten Proyek)
+        const projectData = {
+            aurora: {
+                title: "Aurora Beauty Salon",
+                tag: "Aplikasi Booking Salon",
+                desc: "Aurora Beauty Salon adalah aplikasi web booking salon online yang memudahkan pelanggan melihat layanan kecantikan yang tersedia dan melakukan pemesanan secara online tanpa harus datang langsung atau mengantre. Sistem ini dirancang untuk memberikan proses booking yang sederhana, cepat, dan nyaman bagi pelanggan.",
+                tech: ["PHP", "Laravel", "JavaScript", "MySQL", "Midtrans"],
+                img: "img/proyek/aurorabeutiyufull.png",
+                fallback: "https://images.unsplash.com/photo-1560066984-138dadb4c035?q=80&w=1000"
+            },
+            caraka: {
+                tag: "Sistem Informasi Teritorial & Analisis Wilayah",
+                title: "CARAKA-22",
+                desc: "CARAKA-22 adalah aplikasi web berbasis peta (GIS) yang digunakan untuk memantau dan menganalisis kondisi wilayah di seluruh Indonesia. Data pada sistem ini berasal dari satuan teritorial TNI secara berjenjang, mulai dari Koramil (desa/kelurahan), Kodim (kabupaten/kota), Korem (provinsi), hingga Kodam (wilayah militer). Seluruh data tersebut dikumpulkan, diproses melalui REST API, dan ditampilkan dalam bentuk peta interaktif serta dashboard analitik sehingga kondisi setiap wilayah dapat dipahami dengan cepat dan jelas. Informasi yang ditampilkan dikelompokkan ke dalam lima aspek utama, yaitu Ideologi, Politik, Ekonomi, Sosial Budaya, serta Pertahanan dan Keamanan, dengan status wilayah yang dibagi menjadi empat level: Rusuh, Butuh Atensi, Waspada, dan Aman. Aplikasi ini membantu aparat di lapangan dan pimpinan dalam memantau situasi wilayah secara real-time, menganalisis perkembangan kondisi dari waktu ke waktu, serta mendukung pengambilan keputusan strategis, termasuk pada kegiatan nasional seperti pengamanan Pemilihan Presiden.",
+                tech: ["PHP", "Laravel", "JavaScript", "REST API", "PostgreSQL"],
+                img: "img/proyek/caraka.png",
+                fallback: "https://images.unsplash.com/photo-1586769852836-bc069f19e1b6?q=80&w=1000"
+            },
+            iccs: {
+                title: "Integrated Command and Control System (ICCS)",
+                tag: "C4ISR - Battle Management System Control",
+                desc: "Platform pusat komando berbasis web yang berfungsi sebagai otak taktis untuk mengintegrasikan berbagai unit Battle Management System (BMS). Sistem ini menyajikan Common Operational Picture (COP) secara real-time, memungkinkan komandan untuk melakukan Blue Force Tracking (memantau posisi pasukan kawan), manajemen logistik tempur, serta distribusi perintah operasi (Order of Battle) secara instan ke unit di lapangan melalui jaringan digital terpusat.",
+                tech: ["Laravel", "PHP", "JavaScript", "PostgreSQL", "Websocket", "REST API", "JavaScript", "ArcGIS"],
+                img: "img/proyek/iccs.png",
+                fallback: "https://images.unsplash.com/photo-1579567761406-4684ee0c75b6?q=80&w=1000"
+            },
+            hipsi: {
+                title: "HI-PSI",
+                tag: "Psychological Support Information System",
+                desc: "HI-PSI adalah aplikasi web layanan psikologi milik TNI Angkatan Darat yang dirancang sebagai sarana konsultasi kesehatan mental bagi prajurit di seluruh wilayah penugasan. Aplikasi ini memungkinkan prajurit untuk menyampaikan kondisi psikologis serta memperoleh pendampingan profesional dari psikolog TNI secara aman, rahasia, dan tanpa terhambat jarak. Melalui HI-PSI, TNI AD berupaya menjaga kesehatan mental, ketahanan emosional, serta kesiapan prajurit dalam menjalankan tugas dan tanggung jawab kedinasan secara optimal.",
+                tech: ["Laravel", "PHP", "JavaScript", "PostgreSQL", "WebSocket", "Jitsi Meet"],
+                img: "img/proyek/psi_counseling.png",
+                fallback: "https://images.unsplash.com/photo-1505751172107-573225a9426e?q=80&w=1000"
+            },
+            republikorp: {
+                title: "REPUBLIKORP",
+                tag: "Enterprise Management Information System",
+                desc: "REPUBLIKORP adalah aplikasi manajemen perusahaan terintegrasi berbasis web yang digunakan untuk membantu pengelolaan operasional internal secara lebih rapi dan terpusat. Sistem ini mendukung pengelolaan data karyawan seperti absensi, lembur, dan cuti, manajemen keuangan, administrasi perusahaan, berbagi dokumen, serta pengaturan pengguna dalam satu platform. REPUBLIKORP membantu meningkatkan efisiensi kerja, keteraturan data, transparansi informasi, serta memudahkan manajemen dalam melakukan pengawasan dan pengambilan keputusan.",
+                tech: [
+                    "Laravel",
+                    "PHP",
+                    "JavaScript",
+                    "PostgreSQL",
+                    "REST API",
+                    "ArcGIS",
+                    "Nextcloud"
+                ],
+                img: "img/proyek/republikorp.png",
+                fallback: "https://images.unsplash.com/photo-1505751172107-573225a9426e?q=80&w=1000"
+            },
+            sapa: {
+                title: "SAPA",
+                tag: "Complaint and Protection Information System",
+                desc: "SAPA (Sahabat Perempuan dan Anak) adalah aplikasi web layanan pengaduan dan pendampingan yang digunakan untuk membantu perempuan dan anak dalam melaporkan kasus kekerasan, perlindungan khusus, serta situasi darurat lainnya secara aman dan rahasia. Sistem ini mendukung proses pelaporan, tindak lanjut pengaduan, serta pendampingan oleh petugas terkait guna memastikan perlindungan dan penanganan yang cepat dan tepat.",
+                tech: [
+                    "Laravel",
+                    "PHP",
+                    "JavaScript",
+                    "PostgreSQL",
+                ],
+                img: "img/proyek/sapa.png",
+                fallback: "https://images.unsplash.com/photo-1604881991720-f91add269bed?q=80&w=1000"
+            },
+            koperasi: {
+                title: "Koperasi Simpan Pinjam",
+                tag: "Savings and Loan Cooperative Information System",
+                desc: "Aplikasi Koperasi Simpan Pinjam adalah sistem berbasis web yang dirancang untuk membantu pengelolaan operasional koperasi secara digital. Sistem ini mendukung pengelolaan data anggota, transaksi simpanan dan pinjaman, perhitungan angsuran, serta pembuatan laporan keuangan secara terstruktur guna meningkatkan efisiensi, transparansi, dan akurasi pengelolaan koperasi.",
+                tech: [
+                    "JavaScript",
+                    "Laravel",
+                    "PHP",
+                    "PostgreSQL",
+                ],
+                img: "img/proyek/koperasi.png",
+                fallback: "https://images.unsplash.com/photo-1554224154-22dec7ec8818?q=80&w=1000"
+            },
+            sukma: {
+                title: "SUKMA",
+                tag: "Local E-Commerce Information System",
+                desc: "SUKMA (Sukamukti Market) adalah aplikasi e-commerce berbasis web yang dirancang khusus untuk mendukung kegiatan jual beli produk lokal di wilayah Desa Sukamukti. Aplikasi ini memfasilitasi pelaku UMKM desa dalam memasarkan produknya secara online serta memudahkan masyarakat setempat untuk berbelanja kebutuhan secara praktis, aman, dan terorganisir, sehingga dapat mendorong pertumbuhan ekonomi dan kemandirian desa.",
+                tech: [
+                    "JavaScript",
+                    "Laravel",
+                    "PHP",
+                    "PostgreSQL",
+                    "Midtrans",
+                ],
+                img: "img/proyek/sukma.png",
+                fallback: "https://images.unsplash.com/photo-1607082352121-44f2b4c3c8b9?q=80&w=1000"
+            },
+            portalBerita: {
+                title: "Portal Berita Online",
+                tag: "Online News Information System",
+                desc: "Website ini merupakan portal berita online yang menyajikan informasi aktual dan terpercaya dari berbagai kategori, seperti teknologi, olahraga, hiburan, ekonomi, pendidikan, politik, kesehatan, sosial, gaya hidup, dan lingkungan. Platform ini dirancang untuk memudahkan pembaca dalam menemukan berita yang relevan melalui fitur pencarian, kategori berita, dan tampilan yang responsif. Dengan penyajian konten yang informatif dan terstruktur, website ini bertujuan menjadi sumber informasi harian yang cepat, akurat, dan mudah diakses oleh masyarakat luas.",
+                tech: [
+                    "PHP",
+                    "Laravel",
+                    "PostgreSQL",
+                    "REST API",
+                    "JavaScript",
+                ],
+                img: "img/proyek/portal_berita.png",
+                fallback: "https://images.unsplash.com/photo-1504711434969-e33886168f5c?q=80&w=1000"
+            },
+            sinokAyu: {
+                title: "SINOK AYU",
+                tag: "Inventory Management Information System",
+                desc: "SINOK AYU adalah aplikasi manajemen stok barang yang digunakan untuk mengelola persediaan produk secara terstruktur dan terkontrol. Aplikasi ini mendukung pencatatan data barang, barang masuk, barang keluar, serta laporan stok secara akurat. Dengan sistem peran pengguna seperti owner, admin gudang, dan kasir, SINOK AYU membantu meningkatkan efisiensi operasional, keteraturan data, dan pengawasan stok barang dalam kegiatan usaha.",
+                tech: [
+                    "PHP",
+                    "MySQL",
+                    "JavaScript",
+                    "HTML",
+                    "CSS"
+                ],
+                img: "img/proyek/sinokayu.png",
+                fallback: "https://images.unsplash.com/photo-1581090700227-1e37b190418e?q=80&w=1000"
+            },
+            sinikimas: {
+                title: "SINIKIMAS",
+                tag: "Puskesmas Performance Assessment Information System",
+                desc: "SINIKIMAS merupakan aplikasi penilaian kinerja Puskesmas yang dikembangkan sebagai media evaluasi dan pemantauan mutu pelayanan kesehatan di Kota Semarang. Aplikasi ini disusun berdasarkan Peraturan Menteri Kesehatan Republik Indonesia Nomor 44 Tahun 2016 tentang Pedoman Manajemen Puskesmas serta Peraturan Menteri Kesehatan Republik Indonesia Nomor 43 Tahun 2019 tentang Pusat Kesehatan Masyarakat. Melalui sistem ini, penilaian dilakukan berdasarkan berbagai indikator kinerja yang terstruktur untuk mengukur tingkat pencapaian, efektivitas pelayanan, serta kualitas manajemen Puskesmas secara objektif dan terdokumentasi.",
+                tech: [
+                    "Laravel",
+                    "PHP",
+                    "MySQL",
+                    "JavaScript",
+                    "HTML",
+                    "CSS"
+                ],
+                img: "img/proyek/sinikimas.png",
+                fallback: "https://images.unsplash.com/photo-1581090700227-1e37b190418e?q=80&w=1000"
+            },
+
+
+
+
+
+
+
+
+
+        };
+
+        // 2. FUNGSI UNTUK MERENDER PROYEK KE DALAM HTML
+        function renderProjects() {
+            const container = document.getElementById('projectContainer');
+            let htmlContent = "";
+
+            Object.keys(projectData).forEach((key, index) => {
+                const project = projectData[key];
+                htmlContent += `
+                    <div class="project-card" data-aos="fade-up" data-aos-delay="${index * 50}" onclick="openProjectDetail('${key}')">
+                        <div class="project-img-wrapper">
+                            <img src="${project.img}" alt="${project.title}" class="project-img" onerror="this.src='${project.fallback}';">
+                        </div>
+                        <div class="project-info">
+                            <span class="project-tag">${project.tag}</span>
+                            <h3 class="project-title">${project.title}</h3>
+                            <p class="project-desc">${project.desc}</p>
+                            <div class="project-tech">
+                                ${project.tech.map(t => `<span class="tech-tag">${t}</span>`).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = htmlContent;
+        }
+
+        // Jalankan render proyek saat halaman selesai dimuat
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProjects();
+        });
+
+        // 3. LOGIKA MODAL DETAIL PROYEK
+        const projectModal = document.getElementById("projectDetailModal");
+        const zoomContainer = document.getElementById("zoomContainer");
+        const zoomImg = document.getElementById("detailModalImg");
+
+        function openProjectDetail(id) {
+            const data = projectData[id];
+            if (!data) return;
+
+            zoomImg.src = data.img;
+            document.getElementById("detailModalTitle").innerText = data.title;
+            document.getElementById("detailModalDesc").innerText = data.desc;
+
+            const techContainer = document.getElementById("detailModalTech");
+            techContainer.innerHTML = "";
+            data.tech.forEach(t => techContainer.innerHTML += `<span class="tech-tag">${t}</span>`);
+
+            projectModal.style.display = "flex";
+            setTimeout(() => projectModal.classList.add("active"), 10);
+            document.body.style.overflow = "hidden"; // Disable scroll saat modal buka
+        }
+
+        function closeProjectModal() {
+            projectModal.classList.remove("active");
+            setTimeout(() => {
+                projectModal.style.display = "none";
+                document.body.style.overflow = "auto"; // Enable scroll kembali
+                zoomImg.style.transform = "scale(1)";
+            }, 300);
+        }
+
+        // 4. LOGIKA INTERAKTIF ZOOM PADA GAMBAR PROYEK
+        function handleZoom(e) {
+            const container = zoomContainer;
+            const img = zoomImg;
+
+            // Mendapatkan koordinat dari Mouse atau Touch
+            const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+            const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+
+            const { left, top, width, height } = container.getBoundingClientRect();
+            const x = ((clientX - left) / width) * 100;
+            const y = ((clientY - top) / height) * 100;
+
+            img.style.transformOrigin = `${x}% ${y}%`;
+            img.style.transform = "scale(2.5)";
+        }
+
+        function resetZoom() {
+            zoomImg.style.transform = "scale(1)";
+        }
+
+        // Event Listener Zoom untuk Desktop (Mouse) & Mobile (Touch)
+        zoomContainer.addEventListener('mousemove', handleZoom);
+        zoomContainer.addEventListener('mouseleave', resetZoom);
+        zoomContainer.addEventListener('touchmove', (e) => {
+            handleZoom(e);
+            e.preventDefault(); // Mencegah scrolling saat jari menyentuh gambar
+        }, { passive: false });
+        zoomContainer.addEventListener('touchend', resetZoom);
+
+        // 5. LOGIKA MODAL ZOOM FOTO PROFIL
+        const profileModal = document.getElementById("profileModal");
+        const modalImg = document.getElementById("modalImg");
+        document.getElementById("profileTrigger").addEventListener('click', function () {
+            profileModal.style.display = "flex";
+            modalImg.src = this.src;
+            setTimeout(() => profileModal.classList.add("active"), 10);
+        });
+
+        // Tutup modal jika area luar di-klik
+        window.onclick = function (event) {
+            if (event.target == projectModal) closeProjectModal();
+            if (event.target == profileModal) {
+                profileModal.classList.remove("active");
+                setTimeout(() => profileModal.style.display = "none", 300);
+            }
+        }
+        // --- LOGIKA NAVBAR DINAMIS (INTERSECTION OBSERVER) ---
+
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('header[id], section[id]');
+
+        // Konfigurasi Observer
+        const options = {
+            // rootMargin: '-10% 0px -40% 0px' artinya kita mendeteksi area tengah layar
+            rootMargin: '-15% 0px -70% 0px',
+            threshold: 0 // Aktif segera setelah masuk margin
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.getAttribute('id');
+
+                    // Hapus semua class active
+                    navLinks.forEach(link => {
+                        link.classList.remove('active');
+
+                        // Jika ID adalah 'home', aktifkan link Beranda
+                        if (id === 'home' && link.getAttribute('href') === '#') {
+                            link.classList.add('active');
+                        }
+                        // Cocokkan link dengan ID section
+                        else if (link.getAttribute('href') === '#' + id) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        }, options);
+
+        // Daftarkan semua section dan header ke observer
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+
+        // Logika Tambahan: Khusus untuk deteksi bagian paling bawah (Kontak)
+        window.addEventListener('scroll', () => {
+            if ((window.innerHeight + window.pageYOffset) >= document.body.offsetHeight - 20) {
+                navLinks.forEach(link => link.classList.remove('active'));
+                const contactLink = document.querySelector('a[href="#contact"]');
+                if (contactLink) contactLink.classList.add('active');
+            }
+        });
+
+    </script>
+</body>
+
+</html>
