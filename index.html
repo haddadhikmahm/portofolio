@@ -682,6 +682,93 @@
                 height: 35px;
                 font-size: 1rem;
             }
+            
+            .cv-hotline {
+                bottom: 20px;
+                right: 20px;
+                width: 50px;
+                height: 50px;
+            }
+        }
+
+        /* --- Floating CV Download Button --- */
+        .cv-hotline {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            /* White icon on blue background as requested */
+            background: var(--accent-primary); 
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4); /* Blue shadow */
+            z-index: 1000;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            overflow: visible;
+            border: 2px solid rgba(255, 255, 255, 0.1); /* Subtle border */
+        }
+
+        .cv-hotline:hover {
+            transform: scale(1.05); /* Minimal formal scale */
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6); /* Slightly stronger shadow on hover */
+            background: var(--accent-primary); /* Keep background blue */
+        }
+        
+        .cv-hotline i {
+            color: #ffffff; /* Explicitly white icon */
+            font-size: 1.6rem;
+        }
+
+        /* Tooltip text */
+        .cv-hotline::before {
+            content: 'Download CV';
+            position: absolute;
+            right: 75px;
+            top: 50%;
+            transform: translateY(-50%) translateX(10px);
+            background: var(--glass-bg); /* Use glass background */
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            color: var(--text-bright); /* Use bright text color */
+            padding: 8px 15px;
+            border-radius: 50px; /* Fully rounded for cleaner look */
+            font-size: 0.8rem;
+            font-weight: 600; /* Slightly less heavy weight */
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            pointer-events: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .cv-hotline:hover::before {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(-50%) translateX(0);
+        }
+        /* Ensure icon stays white on hover/active - aggressive targeting for FontAwesome SVG/JS */
+        .cv-hotline i,
+        .cv-hotline svg,
+        .cv-hotline path,
+        .cv-hotline:hover i,
+        .cv-hotline:hover svg,
+        .cv-hotline:hover path,
+        .cv-hotline:active i,
+        .cv-hotline:active svg,
+        .cv-hotline:active path,
+        .cv-hotline:focus i,
+        .cv-hotline:focus svg,
+        .cv-hotline:focus path,
+        .cv-hotline * {
+            color: #ffffff !important;
+            fill: #ffffff !important; /* For SVGs */
+            transition: none !important;
         }
     </style>
 </head>
@@ -1228,6 +1315,9 @@
         });
 
     </script>
+    <a href="cv/bdf096818e23dd9ff271fac806e75495.pdf" class="cv-hotline" download="CV_Haddad_Hikmah_M.pdf" title="Download CV">
+        <i class="fas fa-file-download"></i>
+    </a>
 </body>
 
 </html>
